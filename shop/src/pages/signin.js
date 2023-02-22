@@ -11,8 +11,47 @@ import {
   Link as NextLink,
 } from '@nextui-org/react';
 import Link from 'next/link';
+import { signIn } from 'next-auth/react';
+import { useState } from 'react';
 
 const SignIn = () => {
+  const [userData, setUserData] = useState({ email: '', password: '' });
+  const { name, email, password, conf_password } = userData;
+
+
+  const handleSubmit = async () => {
+    console.log('submit');
+    console.log(userData);
+    const errorMsg = validateUserData(userData.email, userData.password);
+    if (errorMsg) {
+      console.log(errorMsg);
+      return;
+    }
+
+    const res = await signIn('credentials', {
+      email: userData.email,
+      password: userData.password,
+      redirect: false,
+    });
+
+    console.log(res);
+
+  };
+
+  const handleChangeInput = e => {
+    const { name, value } = e.target;
+    console.log(name, value);
+    setUserData({ ...userData, [name]: value });
+  };
+
+  const validateUserData = (email, password) => {
+    if (!email || !password) {
+      return 'Please fill in all fields';
+    }
+
+    return null;
+  };
+
   return (
     <div>
       <Head>
@@ -44,6 +83,8 @@ const SignIn = () => {
             size="lg"
             placeholder="Email"
             aria-label="Email"
+            name="email"
+            onChange={handleChangeInput}
           />
           <Spacer y={1} />
           <Input.Password
@@ -54,6 +95,8 @@ const SignIn = () => {
             size="lg"
             placeholder="Password"
             aria-label="Password"
+            name="password"
+            onChange={handleChangeInput}
           />
           <Row justify="space-between">
             <Checkbox aria-label="Remember me">
@@ -62,7 +105,7 @@ const SignIn = () => {
             <Text size={14} aria-label="Forgot password?">Forgot password?</Text>
           </Row>
           <Spacer y={1} />
-          <Button aria-label="Sign in">Sign in</Button>
+          <Button aria-label="Sign in" onClick={handleSubmit}>Sign in</Button>
           <Spacer y={1} />
           <Text size={14} css={{ as: 'center' }} aria-label="Don't have an account?">
             Don't have an account?

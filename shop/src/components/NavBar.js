@@ -11,7 +11,7 @@ const NavBar = () => {
     <Navbar isBordered variant="floating">
         <Navbar.Content hideIn="xs" variant="highlight-rounded">
           <Navbar.Link as={Link} isActive={isActive("/")} href="/">Features</Navbar.Link>
-          <Navbar.Link as={Link} isActive={isActive("/")} href="/cart">Cart</Navbar.Link>
+          <Navbar.Link as={Link} isActive={isActive("/cart")} href="/cart">Cart</Navbar.Link>
         </Navbar.Content>
         <Navbar.Content>
           <Navbar.Link as={Link} color="inherit" href="/signin">
