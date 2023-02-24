@@ -1,6 +1,8 @@
+import { addToCart } from "@/store/cart.slice";
 import { Col, Container, Row, Text, Grid, Image, Button, Spacer } from "@nextui-org/react"
 import Head from "next/head"
 import { useContext, useState } from "react"
+import { useDispatch } from "react-redux";
 
 
 
@@ -12,6 +14,8 @@ const ProductDetails = ({ product }) => {
     //     return '';
     // };
 
+    const dispatch = useDispatch();
+    
     return (
         <Container>
             <Row>
@@ -39,7 +43,7 @@ const ProductDetails = ({ product }) => {
                             }
                             <Text >{product.description}</Text>
                             <Spacer y={1} />
-                            <Button shadow >
+                            <Button shadow onPress={() => dispatch(addToCart(product))}>
                                 <Text> Buy </Text>
                             </Button>
                         </Col>
