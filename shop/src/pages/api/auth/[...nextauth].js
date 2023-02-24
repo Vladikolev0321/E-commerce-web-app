@@ -8,23 +8,28 @@ const authOptions = {
     },
     providers: [
         CredentialsProvider({
+            name: "Credentials",
             type: "credentials",
             credentials: {},
             async authorize(credentials, req) {
                 const { email, password } = credentials;
-                const res = await fetch("http://localhost:3000/signin", {
+                const res = await fetch("http://localhost:3001/signin", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ email, password }),
                 });
                 const data = await res.json();
-                console.log("data:", data);
+                console.log("Received Data:", data);
+                if (res.ok && data) {
+                    return { data };
+                }
+
                 if (res.status !== 200) {
                     throw new Error(data.message);
                 }
 
-                return { data };
-            }
+                // return { data };
+            },
         })
 
     ],
@@ -42,7 +47,7 @@ const authOptions = {
             }
             return token;
         },
-        async session({ session, token, user }) {
+        async session({ session, token }) {
 
             session.user = token;
             console.log("session", session);
