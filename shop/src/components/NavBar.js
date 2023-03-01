@@ -18,10 +18,10 @@ const NavBar = () => {
         <Navbar.Link as={Link} isActive={isActive("/cart")} href="/cart">Cart</Navbar.Link>
       </Navbar.Content>
 
-      <Navbar.Content>
+      <Navbar.Content hideIn="xs" variant="highlight-rounded">
         {session ? (
           <>
-            <Navbar.Link as={Link} href="/dashboard">Dashboard</Navbar.Link>
+            <Navbar.Link as={Link} isActive={isActive("/profile")} href="/profile">Profile</Navbar.Link>
             <Button auto flat onClick={signOut}>Logout</Button>
           </>
         ) : (
