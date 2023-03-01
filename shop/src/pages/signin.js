@@ -11,12 +11,15 @@ import {
   Link as NextLink,
 } from '@nextui-org/react';
 import Link from 'next/link';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useState } from 'react';
+import { useSelector } from "react-redux";
 
 const SignIn = () => {
   const [userData, setUserData] = useState({ email: '', password: '' });
   const { name, email, password, conf_password } = userData;
+  const orders = useSelector((state) => state.orders);
+  const { data: session, status } = useSession();
 
 
   const handleSubmit = async () => {
@@ -24,6 +27,7 @@ const SignIn = () => {
     console.log(userData);
     const errorMsg = validateUserData(userData.email, userData.password);
     if (errorMsg) {
+      // TODO: show error message
       console.log(errorMsg);
       return;
     }
@@ -33,6 +37,20 @@ const SignIn = () => {
       password: userData.password,
       redirect: false,
     });
+
+    if (res.error) {
+      console.log(res.error);
+      return;
+    }
+
+    // const resJson = await res.json();
+    
+
+    // console.log("Orders", resJson);
+    // orders.setOrders(resJson);
+
+
+
 
     console.log(res);
 

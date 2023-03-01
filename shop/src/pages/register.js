@@ -17,13 +17,16 @@ const Register = () => {
     const handleSubmit = async () => {
         console.log(userData);
         const errorMsg = validateUserData(name, email, password, conf_password);
-        if(errorMsg) console.log(errorMsg);
+        if(errorMsg){
+            console.log(errorMsg);
+            return;
+        }
         
         if (password !== conf_password) {
             return setError('Passwords do not match.');
         }
         try {
-            const res = await fetch('http://localhost:3000/register', {
+            const res = await fetch('http://localhost:3001/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(userData),

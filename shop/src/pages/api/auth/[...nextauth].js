@@ -44,12 +44,13 @@ const authOptions = {
             if (user) {
                 token.accessToken = user.data.token;
                 token.id = user.data.user._id;
+                token.user = user.data.user;
             }
             return token;
         },
         async session({ session, token }) {
 
-            session.user = token;
+            session.user = token.user;
             console.log("session", session);
             console.log("token", token);
             session.accessToken = token.accessToken;
