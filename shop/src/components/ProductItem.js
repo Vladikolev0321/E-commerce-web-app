@@ -3,12 +3,12 @@ import Link from "next/link";
 
 const ProductItem = ({ product }) => {
     return (
-        <Grid xs={12} sm={5}>
+        // <Grid xs={12} sm={5}>
             <Card css={{ w: "100%", h: "400px" }}>
                 <Card.Header css={{ position: "absolute", zIndex: 1, top: 5 }}>
                     <Col>
                         <Text h3 color="black">
-                            {product.title}
+                            {product.name}
                         </Text>
                         <Text color="black">${product.price.toFixed(2)}</Text>
                         {
@@ -37,9 +37,9 @@ const ProductItem = ({ product }) => {
                 >
                     <Row>
                         <Col>
-                            <Text color="#000" size={12}>
+                            {/* <Text color="#000" size={12}>
                                 {product.description}
-                            </Text>
+                            </Text> */}
                         </Col>
 
                         <Col>
@@ -59,7 +59,7 @@ const ProductItem = ({ product }) => {
                     </Row>
                 </Card.Footer>
             </Card>
-        </Grid>
+        // </Grid>
     )
 }
 

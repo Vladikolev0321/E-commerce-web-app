@@ -2,11 +2,14 @@ import Head from "next/head"
 import { Card, Spacer, Button, Text, Input, Row, Checkbox, Container, } from '@nextui-org/react';
 import Link from 'next/link';
 import { useState } from 'react';
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 const Register = () => {
     const [userData, setUserData] = useState({ name: '', email: '', password: '', conf_password: '' });
     const [error, setError] = useState('');
     const { name, email, password, conf_password } = userData;
+    const router = useRouter();
 
     const handleChangeInput = e => {
         const { name, value } = e.target;
@@ -17,13 +20,15 @@ const Register = () => {
     const handleSubmit = async () => {
         console.log(userData);
         const errorMsg = validateUserData(name, email, password, conf_password);
-        if(errorMsg){
+        if (errorMsg) {
             console.log(errorMsg);
+            setError(errorMsg);
             return;
         }
-        
+
         if (password !== conf_password) {
-            return setError('Passwords do not match.');
+            setError('Passwords do not match.');
+            return;
         }
         try {
             const res = await fetch('http://localhost:3001/register', {
@@ -33,6 +38,13 @@ const Register = () => {
             });
             const data = await res.json();
             console.log(data);
+            if (res.ok) {
+                toast.success("Successfully registered");
+                router.replace('/signin');
+            } else {
+                toast.error(data.message);
+            }
+
         } catch (err) {
             console.log(err);
         }
@@ -43,15 +55,15 @@ const Register = () => {
         if (!name || !email || !password || !conf_password) {
             errorMsg = 'Please fill in all fields';
         }
-    
+
         if (password !== conf_password) {
             errorMsg = 'Passwords do not match';
         }
-    
+
         if (password.length < 8) {
             errorMsg = 'Password must be at least 8 characters';
         }
-    
+
         return errorMsg;
     };
 
@@ -78,6 +90,11 @@ const Register = () => {
                     >
                         Register
                     </Text>
+                    {error && (
+                        <Text color="error" css={{ textAlign: 'center', my: '10px' }}>
+                            {error}
+                        </Text>
+                    )}
                     <Input
                         clearable
                         bordered
@@ -127,14 +144,8 @@ const Register = () => {
                     />
                     <Spacer y={1} />
                     <Button
-                        auto
-                        fullWidth
-                        color="primary"
-                        size="large"
-                        type="submit"
                         aria-label="Register"
                         onClick={handleSubmit}
-                        // onSubmit={handleSubmit}
                     >
                         Register
                     </Button>

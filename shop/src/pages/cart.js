@@ -3,6 +3,7 @@ import { Button, Card, Col, Grid, Image, Input, red, Row, Spacer, Table, Text } 
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const Cart = () => {
   const { status, data } = useSession();
@@ -13,6 +14,7 @@ const Cart = () => {
   const [total, setTotal] = useState(0);
   const [mobile, setMobile] = useState("");
   const [address, setAddress] = useState("");
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const result = cart.reduce((prev, item) => {
@@ -22,15 +24,16 @@ const Cart = () => {
   }, [cart]);
 
   const handleCheckout = async () => {
-    if(cart.length === 0 || !mobile || !address) {
+    if (cart.length === 0 || !mobile || !address) {
       // TODO: Notify user to input information
+      setError("Please fill all the fields");
       return;
     }
 
     if (status !== "authenticated") {
-        // TODO: Notify user to login
-        // TODO: Redirect to login page
-        return;
+      // TODO: Notify user to login
+      // TODO: Redirect to login page
+      return;
     }
 
 
@@ -54,10 +57,14 @@ const Cart = () => {
 
     if (res.status === 201) {
       console.log("here")
+      toast.success("Order placed successfully");
       // remove all items from cart
       dispatch(removeAllFromCart());
       // TODO: Notify user that order is placed
+      return;
     }
+
+    toast.error(resJson.message);
 
   }
 
@@ -73,11 +80,11 @@ const Cart = () => {
     },
     {
       key: "price",
-      label: "ROLE",
+      label: "PRICE",
     },
     {
       key: "quantity",
-      label: "STATUS",
+      label: "QUANTITY",
     },
     {
       key: "action",
@@ -85,15 +92,15 @@ const Cart = () => {
     },
   ];
 
-  if(cart.length === 0)
-    return ( <h1>Cart is empty</h1> );
+  if (cart.length === 0)
+    return (<h1>Cart is empty</h1>);
 
   return (
     <>
       <h1>Shopping Cart</h1>
       {/* <Row> */}
 
-      <Grid.Container gap={2} justify="center">
+      <Grid.Container gap={4} justify="center">
 
         <Grid xs={12} sm={10}>
           <Row>
@@ -114,8 +121,8 @@ const Cart = () => {
                 {(item) => (
                   <Table.Row key={item._id}>
                     <Table.Cell><Image width={100} height={100} src={item.images[0].url} /></Table.Cell>
-                    <Table.Cell>{item.title}</Table.Cell>
-                    <Table.Cell>{item.price}</Table.Cell>
+                    <Table.Cell>{item.name}</Table.Cell>
+                    <Table.Cell>${item.price}</Table.Cell>
                     <Table.Cell>
                       <Row>
                         <Button size="xs" color="error" auto onPress={() => dispatch(decrementQuantity(item._id))}>-</Button>
@@ -132,9 +139,14 @@ const Cart = () => {
                 )}
               </Table.Body>
             </Table>
-            <Grid xs={12} sm={4}>
+            <Grid xs={8} sm={3}>
 
               <Col>
+                {error && (
+                  <Text color="error" css={{ textAlign: 'center', my: '10px' }}>
+                    {error}
+                  </Text>
+                )}
                 <Input width="120px" clearable bordered fullWidth color="primary" size="lg"
                   placeholder="Address" aria-label="Address" name="address"
                   value={address} onChange={e => setAddress(e.target.value)}
@@ -150,7 +162,7 @@ const Cart = () => {
         </Grid>
         <Grid xs={12} sm={10}>
           <Col>
-            <Text h3> Total: {total}</Text>
+            <Text h3> Total: ${total}</Text>
             {/* <Row justify="flex-end"> */}
             <Button color="success" auto onPress={handleCheckout}>Checkout</Button>
             {/* </Row> */}

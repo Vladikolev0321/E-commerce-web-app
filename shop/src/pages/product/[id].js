@@ -3,6 +3,7 @@ import { Col, Container, Row, Text, Grid, Image, Button, Spacer } from "@nextui-
 import Head from "next/head"
 import { useContext, useState } from "react"
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 
 
@@ -15,12 +16,16 @@ const ProductDetails = ({ product }) => {
     // };
 
     const dispatch = useDispatch();
+    const handleAddToCart = () => {
+        dispatch(addToCart(product));
+        toast.success("Added to cart");
+    };
     
     return (
         <Container>
             <Row>
                 <Grid.Container gap={4} justify="center">
-                    <Grid xs={12} sm={3}>
+                    <Grid xs={12} sm={4}>
                         <Col>
                             <Image src={product.images[0].url} width="100%" height="100%" objectFit="cover" alt={product.images[0].url} />
                             {/* <Row>
@@ -35,7 +40,7 @@ const ProductDetails = ({ product }) => {
                     <Grid xs={12} sm={7}>
                         <Col>
                             <Text h3>
-                                {product.title}
+                                {product.name}
                             </Text>
                             <Text>${product.price.toFixed(2)}</Text>
                             {
@@ -43,7 +48,7 @@ const ProductDetails = ({ product }) => {
                             }
                             <Text >{product.description}</Text>
                             <Spacer y={1} />
-                            <Button shadow onPress={() => dispatch(addToCart(product))}>
+                            <Button disabled={!(product.countInStock > 0)} shadow onPress={handleAddToCart}>
                                 <Text> Buy </Text>
                             </Button>
                         </Col>

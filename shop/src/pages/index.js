@@ -17,16 +17,20 @@ export default function Home(props) {
       <Head>
         <title>Shop app</title>
       </Head>
+      <h1>Products</h1>
+      <Grid.Container gap={4} justify="flex-start"  >
 
-      {
-        products.length === 0 ? <h2>No Products</h2> :
-          products.map(product =>
-          (
-            <ProductItem key={product._id} product={product} />
-          ))
-      }
+        {
+          products.length === 0 ? <h2>No Products</h2> :
+            products.map(product =>
+            (
 
-      <div>Home</div>
+              <Grid key={product._id} xs={10} sm={3}>
+                <ProductItem key={product._id} product={product} />
+              </Grid>
+            ))
+        }
+      </Grid.Container>
     </>
   )
 }

@@ -14,13 +14,16 @@ import Link from 'next/link';
 import { signIn, useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 const SignIn = () => {
   const [userData, setUserData] = useState({ email: '', password: '' });
+  const [error, setError] = useState('');
   const { name, email, password, conf_password } = userData;
   const orders = useSelector((state) => state.orders);
   const { data: session, status } = useSession();
-
+  const router = useRouter();
 
   const handleSubmit = async () => {
     console.log('submit');
@@ -28,6 +31,7 @@ const SignIn = () => {
     const errorMsg = validateUserData(userData.email, userData.password);
     if (errorMsg) {
       // TODO: show error message
+      setError(errorMsg);
       console.log(errorMsg);
       return;
     }
@@ -36,24 +40,20 @@ const SignIn = () => {
       email: userData.email,
       password: userData.password,
       redirect: false,
+      // callbackUrl: 'http://localhost:3000/',
     });
+    console.log(res);
 
-    if (res.error) {
+    res.status !== 200
+    if (res.status !== 200) {
       console.log(res.error);
+      toast.error(res.error);
       return;
     }
 
-    // const resJson = await res.json();
-    
-
-    // console.log("Orders", resJson);
-    // orders.setOrders(resJson);
-
-
-
-
+    toast.success("Successfully logged in");
+    router.replace('/');
     console.log(res);
-
   };
 
   const handleChangeInput = e => {
@@ -79,7 +79,7 @@ const SignIn = () => {
         display="flex"
         alignItems="center"
         justify="center"
-        css={{ minHeight: '100vh' }}
+        css={{ minHeight: '100vh', minWidth: '20vw'}}
       >
         <Card css={{ mw: '420px', p: '20px' }}>
           <Text
@@ -93,6 +93,11 @@ const SignIn = () => {
           >
             Login
           </Text>
+          {error && (
+            <Text color="error" css={{ textAlign: 'center', my: '10px' }}>
+              {error}
+            </Text>
+          )}
           <Input
             clearable
             bordered
@@ -116,6 +121,7 @@ const SignIn = () => {
             name="password"
             onChange={handleChangeInput}
           />
+          <Spacer y={1} />
           <Row justify="space-between">
             <Checkbox aria-label="Remember me">
               <Text size={14}>Remember me</Text>

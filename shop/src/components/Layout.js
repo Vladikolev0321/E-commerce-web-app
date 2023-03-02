@@ -1,10 +1,12 @@
 import NavBar from "./NavBar";
 import styles from '@/styles/Home.module.css'
 import Head from "next/head";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 const Layout = ({ children }) => {
     return (
-        <div>
+        <>
             {/* <Header /> */}
             <Head>
                 <title>Shop app</title>
@@ -14,8 +16,9 @@ const Layout = ({ children }) => {
             </Head>
             <NavBar />
             <main className={styles.main}>{children}</main>
+            <ToastContainer />
             {/* <Footer /> */}
-        </div>
+        </>
     );
 };
 
