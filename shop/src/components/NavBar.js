@@ -4,8 +4,6 @@ import { useRouter } from 'next/router'
 import { useSession, signOut } from "next-auth/react";
 
 const NavBar = () => {
-
-  // console.log("session", session);
   const { data: session, status } = useSession();
   const router = useRouter();
   const isActive = (path) => {
@@ -15,12 +13,19 @@ const NavBar = () => {
     <Navbar isBordered variant="floating">
       <Navbar.Content hideIn="xs" variant="highlight-rounded">
         <Navbar.Link as={Link} isActive={isActive("/")} href="/">Features</Navbar.Link>
-        <Navbar.Link as={Link} isActive={isActive("/cart")} href="/cart">Cart</Navbar.Link>
       </Navbar.Content>
 
       <Navbar.Content hideIn="xs" variant="highlight-rounded">
         {session ? (
           <>
+            <Navbar.Link as={Link} isActive={isActive("/cart")} href="/cart">Cart</Navbar.Link>
+            {session.user.role === "admin" && (
+              <>
+              <Navbar.Link as={Link} isActive={isActive("/create")} href="/create">Admin</Navbar.Link>
+              <Navbar.Link as={Link} isActive={isActive("/products-admin")} href="/products-admin">Products</Navbar.Link>
+              </>
+              )
+            }
             <Navbar.Link as={Link} isActive={isActive("/profile")} href="/profile">Profile</Navbar.Link>
             <Button auto flat onClick={signOut}>Logout</Button>
           </>

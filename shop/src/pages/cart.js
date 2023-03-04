@@ -1,6 +1,7 @@
 import { decrementQuantity, incrementQuantity, removeAllFromCart, removeFromCart } from "@/store/cart.slice";
 import { Button, Card, Col, Grid, Image, Input, red, Row, Spacer, Table, Text } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -15,6 +16,7 @@ const Cart = () => {
   const [mobile, setMobile] = useState("");
   const [address, setAddress] = useState("");
   const [error, setError] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
     const result = cart.reduce((prev, item) => {
@@ -25,14 +27,13 @@ const Cart = () => {
 
   const handleCheckout = async () => {
     if (cart.length === 0 || !mobile || !address) {
-      // TODO: Notify user to input information
       setError("Please fill all the fields");
       return;
     }
 
     if (status !== "authenticated") {
-      // TODO: Notify user to login
-      // TODO: Redirect to login page
+      toast.error("Please sign in to continue");
+      router.push("/signin");
       return;
     }
 
@@ -49,18 +50,15 @@ const Cart = () => {
         address,
         orderedItems: cart,
         totalPrice: total,
-      }),///
+      }),
     });
 
     const resJson = await res.json();
     console.log("resJson", resJson);
 
     if (res.status === 201) {
-      console.log("here")
       toast.success("Order placed successfully");
-      // remove all items from cart
       dispatch(removeAllFromCart());
-      // TODO: Notify user that order is placed
       return;
     }
 
@@ -98,8 +96,6 @@ const Cart = () => {
   return (
     <>
       <h1>Shopping Cart</h1>
-      {/* <Row> */}
-
       <Grid.Container gap={4} justify="center">
 
         <Grid xs={12} sm={10}>
@@ -133,8 +129,6 @@ const Cart = () => {
                       </Row>
                     </Table.Cell>
                     <Table.Cell><Button color="error" auto onPress={() => dispatch(removeFromCart(item._id))}>Remove</Button></Table.Cell>
-
-                    {/* {(columnKey) => <Table.Cell>{item[columnKey]}</Table.Cell>} */}
                   </Table.Row>
                 )}
               </Table.Body>
