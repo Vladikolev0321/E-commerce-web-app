@@ -1,7 +1,7 @@
 import { Button, Container, Input, Spacer } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 const { useRouter } = require("next/router");
@@ -17,12 +17,35 @@ const CreateProduct = () => {
     const [uploadData, setUploadData] = useState(undefined);
     const [error, setError] = useState("");
 
+
+    // useEffect(async () => {
+    //     if (id) {
+    //         // fetch product
+    //         const res = await fetch(`http://localhost:3001/product/${id}`, {
+    //             method: "GET",
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //                 "Authorization": "Bearer " + session.accessToken
+    //             }
+    //         });
+    //         console.log("res:", res);
+    //         const data = await res.json();
+    //         console.log("data:", data);
+    //         if (res.ok) {
+    //             setProduct(data);
+    //         } else {
+    //             setError(data.message);
+    //         }
+    //     }
+    // }, [id]);
+
+
     const handleChangeInput = e => {
         const { name, value } = e.target;
         setProduct({ ...product, [name]: value });
     }
 
-    function handleOnUpload(changeEvent) {
+    const handleOnUpload = (e) => {
         const reader = new FileReader();
 
         reader.onload = function (onLoadEvent) {
@@ -30,7 +53,7 @@ const CreateProduct = () => {
             setUploadData(undefined);
         }
 
-        reader.readAsDataURL(changeEvent.target.files[0]);
+        reader.readAsDataURL(e.target.files[0]);
     }
 
     const handleSubmit = async () => {
@@ -127,7 +150,7 @@ const CreateProduct = () => {
                 onChange={handleChangeInput}
             />
             <Input clearable bordered fullWidth color="primary" size="lg"
-                placeholder="Content" aria-label="Content" name="content"
+                placeholder="Content" aria-label="Content" name="content" type={"text"}
                 onChange={handleChangeInput}
             />
             <Input clearable fullWidth color="primary" size="lg"
