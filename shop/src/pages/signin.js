@@ -70,6 +70,11 @@ const SignIn = () => {
     return null;
   };
 
+  if(status === 'loading') return <div>Loading...</div>
+  if(status === 'authenticated') {
+    router.replace('/');
+    return <div>Redirecting...</div>
+  }
   return (
     <div>
       <Head>

@@ -28,8 +28,6 @@ const Profile = ({ orders }) => {
                         <Text h3>Profile</Text>
                         <Text>Username: {session.user.name}</Text>
                         <Text>Email: {session.user.email}</Text>
-                        <Text>Phone</Text>
-                        <Text>Address</Text>
                     </Card>
                 </Col>
                 <Spacer x={2} />
@@ -59,7 +57,7 @@ const Profile = ({ orders }) => {
                                             month: "long",
                                             day: "numeric",
                                         })}</Table.Cell>
-                                        <Table.Cell>{item.totalPrice}</Table.Cell>
+                                        <Table.Cell>${item.totalPrice}</Table.Cell>
                                         <Table.Cell>{String(item.isDelivered)}</Table.Cell>
                                         <Table.Cell>{String(item.paid)}</Table.Cell>
                                         <Table.Cell><Button as={Link} href={`/order/${item._id}`} auto>Details</Button></Table.Cell>

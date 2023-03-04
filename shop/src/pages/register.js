@@ -4,12 +4,15 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 const Register = () => {
     const [userData, setUserData] = useState({ name: '', email: '', password: '', conf_password: '' });
     const [error, setError] = useState('');
     const { name, email, password, conf_password } = userData;
     const router = useRouter();
+    const { data: session, status } = useSession();
+
 
     const handleChangeInput = e => {
         const { name, value } = e.target;
@@ -66,6 +69,12 @@ const Register = () => {
 
         return errorMsg;
     };
+
+    if(status === 'loading') return <div>Loading...</div>
+    if(status === 'authenticated') {
+        router.replace('/');
+        return <div>Redirecting...</div>
+    }
 
     return (
         <div>
