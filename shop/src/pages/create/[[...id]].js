@@ -1,4 +1,4 @@
-import { Button, Container, Input, Spacer } from "@nextui-org/react";
+import { Button, Card, Container, Image, Input, Spacer, Text, Textarea } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useEffect, useState } from "react";
@@ -15,6 +15,7 @@ const CreateProduct = () => {
     //
     const [imageSrc, setImageSrc] = useState("");
     const [uploadData, setUploadData] = useState(undefined);
+    const [selectedImage, setSelectedImage] = useState("");
     const [error, setError] = useState("");
 
 
@@ -46,6 +47,8 @@ const CreateProduct = () => {
     }
 
     const handleOnUpload = (e) => {
+        const file = e.target.files[0];
+        setSelectedImage(URL.createObjectURL(file));
         const reader = new FileReader();
 
         reader.onload = function (onLoadEvent) {
@@ -93,6 +96,7 @@ const CreateProduct = () => {
 
                 const { name, price, countInStock, description } = product;
                 if (!name || !price || !countInStock || !description || !images) {
+                    setError("Please fill in all fields");
                     toast.error("Please fill in all fields");
                     return;
                 }
@@ -109,7 +113,7 @@ const CreateProduct = () => {
 
                 const dataRes = await res.json();
                 console.log("dataRes:", dataRes);
-                if (res.status === 201){
+                if (res.status === 201) {
                     toast.success("Product created successfully");
                     router.replace('/');
                 }
@@ -128,37 +132,46 @@ const CreateProduct = () => {
             alignItems="center"
             justify="center"
             css={{ minHeight: '100vh', minWidth: '20vw', maxHeight: '100vh', maxW: '40vw' }}>
-            {error && (
-                <Text color="error" css={{ textAlign: 'center', my: '10px' }}>
-                    {error}
-                </Text>
-            )}
-            <Input clearable bordered fullWidth color="primary" size="lg"
-                placeholder="Name" aria-label="Name" name="name"
-                onChange={handleChangeInput}
-            />
-            <Input clearable bordered fullWidth color="primary" size="lg"
-                placeholder="Price" aria-label="Price" name="price" type={"number"}
-                onChange={handleChangeInput}
-            />
-            <Input clearable bordered fullWidth color="primary" size="lg"
-                placeholder="In Stock" aria-label="In Stock" name="countInStock" type={"number"}
-                onChange={handleChangeInput}
-            />
-            <Input clearable bordered fullWidth color="primary" size="lg"
-                placeholder="Description" aria-label="Description" name="description"
-                onChange={handleChangeInput}
-            />
-            <Input clearable bordered fullWidth color="primary" size="lg"
-                placeholder="Content" aria-label="Content" name="content" type={"text"}
-                onChange={handleChangeInput}
-            />
-            <Input clearable fullWidth color="primary" size="lg"
-                placeholder="Image" aria-label="Image" name="images" type={"file"}
-                onChange={handleOnUpload}
-            />
-            <Spacer y={1} />
-            <Button color="primary" css={{}} onPress={handleSubmit}>Create product</Button>
+            <Card css={{ mw: '420px', p: '20px', minWidth: '450px' }}>
+                {error && (
+                    <Text color="error" css={{ textAlign: 'center', my: '10px' }}>
+                        {error}
+                    </Text>
+                )}
+                <Input clearable bordered fullWidth color="primary" size="lg"
+                    placeholder="Name" aria-label="Name" name="name" label="Name"
+                    onChange={handleChangeInput}
+                />
+                <Spacer y={1} />
+                <Input clearable bordered fullWidth color="primary" size="lg"
+                    placeholder="Price" aria-label="Price" name="price" type={"number"} label="Price"
+                    onChange={handleChangeInput}
+                />
+                <Spacer y={1} />
+                <Input clearable bordered fullWidth color="primary" size="lg"
+                    placeholder="In Stock" aria-label="In Stock" name="countInStock" type={"number"} label="In Stock"
+                    onChange={handleChangeInput}
+                />
+                <Spacer y={1} />
+                <Textarea clearable bordered fullWidth color="primary" size="lg"
+                    placeholder="Description" aria-label="Description" name="description" label="Description"
+                    onChange={handleChangeInput}
+                />
+                <Spacer y={1} />
+                <Input clearable bordered fullWidth color="primary" size="lg"
+                    placeholder="Content" aria-label="Content" name="content" label="Content"
+                    onChange={handleChangeInput}
+                />
+                <Spacer y={1} />
+                { selectedImage && (<Card><Card.Image src={selectedImage} width={'100%'} height={'100%'} /> </Card> ) }
+                <Spacer y={1} />
+                <Input clearable fullWidth color="primary" size="lg"
+                    placeholder="Image" aria-label="Image" name="images" type={"file"} label="Image"
+                    onChange={handleOnUpload}
+                />
+                <Spacer y={1} />
+                <Button color="primary" css={{}} onPress={handleSubmit}>Create product</Button>
+            </Card>
         </Container>
     </>;
 }

@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
-const { Grid, Table, Button, Row, Spacer, Image, Modal } = require("@nextui-org/react");
+const { Grid, Table, Button, Row, Spacer, Image, Modal, Card } = require("@nextui-org/react");
 
 const ProductsAdmin = ({ products }) => {
     const {data: session, status} = useSession();
@@ -88,7 +88,7 @@ const ProductsAdmin = ({ products }) => {
                             products.map(product =>
                             (
                                 <Table.Row key={product._id}>
-                                    <Table.Cell><Image width={100} height={100} src={product.images[0].url} /></Table.Cell>
+                                    <Table.Cell><Card css={{maxWidth:200, maxHeight: 150}}><Card.Image width={'100%'} height={'100%'} src={product.images[0].url} /></Card></Table.Cell>
                                     <Table.Cell>{product.name}</Table.Cell>
                                     <Table.Cell>{product.sold}</Table.Cell>
                                     <Table.Cell>{product.countInStock}</Table.Cell>

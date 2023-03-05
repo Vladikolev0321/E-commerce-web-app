@@ -1,5 +1,5 @@
 import { addToCart } from "@/store/cart.slice";
-import { Col, Container, Row, Text, Grid, Image, Button, Spacer } from "@nextui-org/react"
+import { Col, Container, Row, Text, Grid, Image, Button, Spacer, Card } from "@nextui-org/react"
 import Head from "next/head"
 import { useContext, useState } from "react"
 import { useDispatch } from "react-redux";
@@ -20,21 +20,23 @@ const ProductDetails = ({ product }) => {
         dispatch(addToCart(product));
         toast.success("Added to cart");
     };
-    
+
     return (
         <Container>
             <Row>
                 <Grid.Container gap={4} justify="center">
                     <Grid xs={12} sm={4}>
                         <Col>
-                            <Image src={product.images[0].url} width="100%" height="100%" objectFit="cover" alt={product.images[0].url} />
-                            {/* <Row>
+                            <Card>
+                                <Image src={product.images[0].url} width="100%" height="100%" objectFit="cover" alt={product.images[0].url} />
+                                {/* <Row>
                                 {product.images.map((image, index) => (
                                     // <Col key={index}>
                                         <Image src={image.url} width="100%" height="100%" objectFit="cover" alt={image.url} />
                                     // </Col>
                                 ))}
                             </Row> */}
+                            </Card>
                         </Col>
                     </Grid>
                     <Grid xs={12} sm={7}>

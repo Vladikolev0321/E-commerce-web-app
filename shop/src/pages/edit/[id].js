@@ -117,7 +117,7 @@ const EditProduct = ({ product: initialProduct }) => {
                     // onChange={handleChangeInput}
                 /> */}
                 <Spacer y={1} />
-                <Image src={selectedImage} width={200} height={200} />
+                <Card><Card.Image src={selectedImage} width={'100%'} height={'100%'} /> </Card>
                 <Spacer y={1} />
                 <Input clearable fullWidth color="primary" size="lg"
                     placeholder="Image" aria-label="Image" name="images" type={"file"} label="Image"

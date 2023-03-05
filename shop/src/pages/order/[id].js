@@ -66,7 +66,11 @@ const OrderDetails = () => {
                                     <Text>Order Date:</Text>
                                 </Col>
                                 <Col span={18}>
-                                    <Text>{currOrder.createdAt}</Text>
+                                    <Text>{new Date(currOrder.createdAt).toLocaleDateString("en-US", {
+                                        year: "numeric",
+                                        month: "long",
+                                        day: "numeric",
+                                    })}</Text>
                                 </Col>
                             </Row>
                             <Row>
@@ -89,6 +93,7 @@ const OrderDetails = () => {
                             {currOrder.orderedItems.map((item) => (
                                 <Row key={item._id} align="middle">
                                     <Col span={6}>
+                                        {/* <Card css={{ width: 100, height: 100}}><Card.Image src={item.images[0].url} width={'100%'} height={'100%'} /> </Card> */}
                                         <Image src={item.images[0].url} width={100} height={100} />
                                     </Col>
                                     <Col span={18}>
