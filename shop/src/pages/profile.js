@@ -60,7 +60,7 @@ const Profile = ({ orders }) => {
                                         <Table.Cell>${item.totalPrice}</Table.Cell>
                                         <Table.Cell>{String(item.isDelivered)}</Table.Cell>
                                         <Table.Cell>{String(item.paid)}</Table.Cell>
-                                        <Table.Cell><Button as={Link} href={`/order/${item._id}`} auto>Details</Button></Table.Cell>
+                                        <Table.Cell><Button as={Link} href={`/orders/${item._id}`} auto>Details</Button></Table.Cell>
 
                                         {/* <Table.Cell><Image width={100} height={100} src={item.images[0].url} /></Table.Cell>
                                         <Table.Cell>{item.title}</Table.Cell>
@@ -107,24 +107,9 @@ export async function getServerSideProps(context) {
     });
     const resJson = await res.json();
     console.log("resJson", resJson);
-
-    // console.log("context", context.store)
-
-    // const dispatch = useDispatch({context: context});
-    // dispatch(setOrders(resJson));
-
-    // const orders = store.getState().orders;
-    // console.log("orders from serverside", orders);
-    // const orders = useSelector((state) => state.orders);
-    // orders.setOrders(resJson);
-
-
-
     return {
         props: { orders: resJson },
     };
-
-
 }
 
 export default Profile;

@@ -1,26 +1,31 @@
 import { Button, Card, Col, Grid, Image, Row, Text } from "@nextui-org/react";
+import { getSession, useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
-const OrderDetails = () => {
-    const { orders } = useSelector((state) => state.orders);
+const OrderDetails = ( {order} ) => {
+    const { data: session, status } = useSession();
+    // const { orders } = useSelector((state) => state.orders);
 
-    const [order, setOrder] = useState({});
+    // const [order, setOrder] = useState({});
     const router = useRouter();
 
-    const currOrder = orders.find((order) => order._id === router.query.id);
-    console.log("currOrder", currOrder);
+    // const order = orders.find((order) => order._id === router.query.id);
+    // console.log("order", order);
 
 
-
+    // TODO: Add check for session
+    if(!session){
+        return null;
+    }
     return (
         <div>
             <Head>
                 <title>Order Details</title>
             </Head>
-            <Button onPress={() => { router.back() }} shadow color="secondary" >Go back</Button>
+            
             <h1>Order Details</h1>
             <Grid.Container gap={2}>
                 <Grid xs={24} md={12}>
@@ -34,7 +39,7 @@ const OrderDetails = () => {
                                     <Text>Name:</Text>
                                 </Col>
                                 <Col span={18}>
-                                    <Text>{currOrder.user.name}</Text>
+                                    <Text>{order.user.name}</Text>
                                 </Col>
                             </Row>
                             <Row>
@@ -42,7 +47,7 @@ const OrderDetails = () => {
                                     <Text>Email:</Text>
                                 </Col>
                                 <Col span={18}>
-                                    <Text>{currOrder.user.email}</Text>
+                                    <Text>{order.user.email}</Text>
                                 </Col>
                             </Row> */}
                             <Row>
@@ -50,7 +55,7 @@ const OrderDetails = () => {
                                     <Text>Address:</Text>
                                 </Col>
                                 <Col span={18}>
-                                    <Text>{currOrder.address}</Text>
+                                    <Text>{order.address}</Text>
                                 </Col>
                             </Row>
                             <Row>
@@ -58,7 +63,7 @@ const OrderDetails = () => {
                                     <Text>Phone:</Text>
                                 </Col>
                                 <Col span={18}>
-                                    <Text>{currOrder.mobile}</Text>
+                                    <Text>{order.mobile}</Text>
                                 </Col>
                             </Row>
                             <Row>
@@ -66,7 +71,7 @@ const OrderDetails = () => {
                                     <Text>Order Date:</Text>
                                 </Col>
                                 <Col span={18}>
-                                    <Text>{new Date(currOrder.createdAt).toLocaleDateString("en-US", {
+                                    <Text>{new Date(order.createdAt).toLocaleDateString("en-US", {
                                         year: "numeric",
                                         month: "long",
                                         day: "numeric",
@@ -78,7 +83,7 @@ const OrderDetails = () => {
                                     <Text>Order Status:</Text>
                                 </Col>
                                 <Col span={18}>
-                                    <Text>{currOrder.status}</Text>
+                                    <Text>{order.status}</Text>
                                 </Col>
                             </Row>
                         </Card.Body>
@@ -90,7 +95,7 @@ const OrderDetails = () => {
                             <Text h4>Ordered Items</Text>
                         </Card.Header>
                         <Card.Body>
-                            {currOrder.orderedItems.map((item) => (
+                            {order.orderedItems.map((item) => (
                                 <Row key={item._id} align="middle">
                                     <Col span={6}>
                                         {/* <Card css={{ width: 100, height: 100}}><Card.Image src={item.images[0].url} width={'100%'} height={'100%'} /> </Card> */}
@@ -106,16 +111,52 @@ const OrderDetails = () => {
                                     </Col>
                                 </Row>
                             ))}
-                            <Text h3>Total: ${currOrder.totalPrice}</Text>
+                            <Text h3>Total: ${order.totalPrice}</Text>
                         </Card.Body>
                     </Card>
                 </Grid>
             </Grid.Container>
+            <Button css={{width: '100%'}} onPress={() => { router.back() }} shadow color="secondary" >Go back</Button>
 
             {/* <p>Order ID: {order.id}</p>
       <p>Order Status: {order.status}</p> */}
         </div>
     );
 };
+
+// TODO: Add getServerSideProps to fetch order details
+
+export async function getServerSideProps(context) {
+    const { params } = context;
+    const { id } = params;
+    const session = await getSession(context);
+
+    if (!session) {
+        return {
+            redirect: {
+                destination: "/signin",
+                permanent: false,
+            },
+        };
+    }
+    const order = await fetch(`http://localhost:3001/orders/${id}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${session.accessToken}`
+        },
+    });
+    console.log("order", order);
+
+    const orderData = await order.json();
+    console.log("order", orderData  );
+
+
+    return {
+        props: {
+            order: orderData.order,
+        },
+    };
+}
 
 export default OrderDetails;

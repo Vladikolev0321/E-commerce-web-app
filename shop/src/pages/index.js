@@ -25,7 +25,7 @@ export default function Home(props) {
             products.map(product =>
             (
 
-              <Grid key={product._id} xs={10} sm={3}>
+              <Grid key={product._id} xs={10} sm={3} /*css={{minWidth: '200px'}}*/>
                 <ProductItem key={product._id} product={product} />
               </Grid>
             ))

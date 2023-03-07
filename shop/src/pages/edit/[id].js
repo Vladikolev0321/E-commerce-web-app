@@ -117,9 +117,9 @@ const EditProduct = ({ product: initialProduct }) => {
                     // onChange={handleChangeInput}
                 /> */}
                 <Spacer y={1} />
-                <Card><Card.Image src={selectedImage} width={'100%'} height={'100%'} /> </Card>
+                <Card><Card.Image src={selectedImage ? selectedImage : product.images[0].url} width={'100%'} height={'100%'} /> </Card>
                 <Spacer y={1} />
-                <Input clearable fullWidth color="primary" size="lg"
+                <Input fullWidth color="primary" size="lg"
                     placeholder="Image" aria-label="Image" name="images" type={"file"} label="Image"
                     // value={product.images[0]}
                     onChange={handleOnUpload}
@@ -134,7 +134,7 @@ const EditProduct = ({ product: initialProduct }) => {
 export async function getServerSideProps(context) {
     const { params } = context;
     const session = await getSession(context);
-    if (session.user.role !== "admin") {
+    if (!session || session.user.role !== "admin") {
         return {
             redirect: {
                 destination: "/",

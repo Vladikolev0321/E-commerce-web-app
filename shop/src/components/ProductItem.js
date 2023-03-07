@@ -1,10 +1,13 @@
 import { Card, Col, Row, Button, Text, Grid } from "@nextui-org/react";
 import Link from "next/link";
+import { useState } from "react";
 
 const ProductItem = ({ product }) => {
+    const [isHovered, setIsHovered] = useState(false);
     return (
         // <Grid xs={12} sm={5}>
             <Card css={{ w: "100%", h: "400px" }}>
+                {/* { isHovered &&  */}
                 <Card.Header css={{ position: "absolute", zIndex: 1, top: 5 }}>
                     <Col>
                         <Text h3 color="black">
@@ -16,6 +19,7 @@ const ProductItem = ({ product }) => {
                         }
                     </Col>
                 </Card.Header>
+                {/* } */}
                 <Card.Body css={{ p: 0 }}>
                     <Card.Image
                         src={product.images[0].url}
@@ -23,6 +27,16 @@ const ProductItem = ({ product }) => {
                         height="100%"
                         objectFit="cover"
                         alt={product.images[0].url}
+                        onMouseEnter={() => setIsHovered(true)}
+                        onMouseLeave={() => setIsHovered(false)}
+                        // css={{
+                        //     transition: "all 0.3s ease",
+                        //     transform: isHovered ? "scale(1.1)" : "scale(1)",
+                        // }}
+                        // css={{
+                        //     filter: isHovered ? "blur(10px)" : "none",
+                        //     transition: "filter 0.3s ease-in-out",
+                        //   }}
                     />
                 </Card.Body>
                 <Card.Footer
