@@ -50,8 +50,8 @@ const ProductDetails = ({ product }) => {
                             }
                             <Text >{product.description}</Text>
                             <Spacer y={1} />
-                            <Button disabled={!(product.countInStock > 0)} shadow onPress={handleAddToCart}>
-                                <Text> Buy </Text>
+                            <Button color="success" disabled={!(product.countInStock > 0)} shadow onPress={handleAddToCart}>
+                                <Text color="white"> Buy </Text>
                             </Button>
                         </Col>
                     </Grid>

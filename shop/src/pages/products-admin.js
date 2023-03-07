@@ -11,7 +11,6 @@ const ProductsAdmin = ({ products }) => {
     const {data: session, status} = useSession();
     const [visible, setVisible] = useState(false);
     const [currId, setId] = useState("");
-    const router = useRouter();
 
     const handler = (id) => {
         setVisible(true);
@@ -73,7 +72,7 @@ const ProductsAdmin = ({ products }) => {
                 css={{
                     height: "auto",
                     minWidth: "100%",
-                    width: 800,
+                    width: 900,
                 }}>
                 <Table.Header>
                     <Table.Column></Table.Column>
@@ -81,7 +80,7 @@ const ProductsAdmin = ({ products }) => {
                     <Table.Column>UNIT SOLD</Table.Column>
                     <Table.Column>IN STOCK</Table.Column>
                     <Table.Column>PRICE</Table.Column>
-                    <Table.Column>ACTIONS</Table.Column>
+                    <Table.Column></Table.Column>
                 </Table.Header>
                 <Table.Body>
                     {
@@ -114,7 +113,7 @@ const ProductsAdmin = ({ products }) => {
 
 export async function getServerSideProps(context) {
     const session = await getSession(context);
-    if (session.user.role !== "admin") {
+    if (!session || session.user.role !== "admin") {
         return {
             redirect: {
                 destination: "/signin",
