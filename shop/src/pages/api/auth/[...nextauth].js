@@ -13,7 +13,7 @@ const authOptions = {
             credentials: {},
             async authorize(credentials, req) {
                 const { email, password } = credentials;
-                const res = await fetch("http://localhost:3001/signin", {
+                const res = await fetch(`${process.env.SERVER_URL}/signin`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ email, password }),
@@ -27,8 +27,6 @@ const authOptions = {
                 if (res.status !== 200) {
                     throw new Error(data.message);
                 }
-
-                // return { data };
             },
         })
 
@@ -38,9 +36,6 @@ const authOptions = {
     },
     callbacks: {
         async jwt({ token, user }) {
-            console.log("jwt", token);
-            console.log("data", user);
-
             if (user) {
                 token.accessToken = user.data.token;
                 token.id = user.data.user._id;
@@ -51,8 +46,6 @@ const authOptions = {
         async session({ session, token }) {
 
             session.user = token.user;
-            console.log("session", session);
-            console.log("token", token);
             session.accessToken = token.accessToken;
             return session;
         },

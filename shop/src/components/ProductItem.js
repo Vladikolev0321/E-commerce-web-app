@@ -8,7 +8,7 @@ const ProductItem = ({ product }) => {
         // <Grid xs={12} sm={5}>
             <Card css={{ w: "100%", h: "400px" }}>
                 {/* { isHovered &&  */}
-                <Card.Header css={{ position: "absolute", zIndex: 1, top: 5 }}>
+                {/* <Card.Header css={{ position: "absolute", zIndex: 1, top: 5 }}>
                     <Col>
                         <Text h3 color="black">
                             {product.name}
@@ -18,7 +18,7 @@ const ProductItem = ({ product }) => {
                             product.countInStock > 0 ? <Text color="green">In Stock {product.countInStock}</Text> : <Text color="red">Out of Stock</Text>
                         }
                     </Col>
-                </Card.Header>
+                </Card.Header> */}
                 {/* } */}
                 <Card.Body css={{ p: 0 }}>
                     <Card.Image
@@ -29,10 +29,10 @@ const ProductItem = ({ product }) => {
                         alt={product.images[0].url}
                         onMouseEnter={() => setIsHovered(true)}
                         onMouseLeave={() => setIsHovered(false)}
-                        // css={{
-                        //     transition: "all 0.3s ease",
-                        //     transform: isHovered ? "scale(1.1)" : "scale(1)",
-                        // }}
+                        css={{
+                            transition: "all 0.3s ease",
+                            transform: isHovered ? "scale(1.1)" : "scale(1)",
+                        }}
                         // css={{
                         //     filter: isHovered ? "blur(10px)" : "none",
                         //     transition: "filter 0.3s ease-in-out",
@@ -51,9 +51,12 @@ const ProductItem = ({ product }) => {
                 >
                     <Row>
                         <Col>
-                            {/* <Text color="#000" size={12}>
-                                {product.description}
-                            </Text> */}
+                            <Text color="#000" b h4>
+                                {product.name}
+                            </Text>
+                            <Text color="#000" size={15}>
+                                ${product.price.toFixed(2)}
+                            </Text>
                         </Col>
 
                         <Col>

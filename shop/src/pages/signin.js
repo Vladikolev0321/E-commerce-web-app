@@ -137,8 +137,7 @@ const SignIn = () => {
           <Button aria-label="Sign in" onClick={handleSubmit}>Sign in</Button>
           <Spacer y={1} />
           <Text size={14} css={{ as: 'center' }} aria-label="Don't have an account?">
-            Don't have an account?
-            {' '}
+            Don&apos;t have an account?
             <NextLink as={Link} href="/register">Sign up</NextLink>
           </Text>
         </Card>

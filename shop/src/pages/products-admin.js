@@ -24,7 +24,7 @@ const ProductsAdmin = ({ products }) => {
 
     const deleteProduct = async () => {
         console.log("delete", currId);
-        const res = await fetch(`http://localhost:3001/product/${currId}`, {
+        const res = await fetch(`${process.env.SERVER_URL}/product/${currId}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -122,7 +122,7 @@ export async function getServerSideProps(context) {
         };
     }
 
-    const res = await fetch(`http://localhost:3001/products`);
+    const res = await fetch(`${process.env.SERVER_URL}/products`);
     const resJson = await res.json();
     const products = resJson.products;
 

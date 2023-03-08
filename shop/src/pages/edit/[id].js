@@ -63,7 +63,7 @@ const EditProduct = ({ product: initialProduct }) => {
 
 
 
-            const res = await fetch(`http://localhost:3001/product/${id}`, {
+            const res = await fetch(`${process.env.SERVER_URL}/product/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -143,7 +143,7 @@ export async function getServerSideProps(context) {
         };
     }
     // TODO: get product from database and pass as prop
-    const res = await fetch(`http://localhost:3001/products/${params.id}`);
+    const res = await fetch(`${process.env.SERVER_URL}/products/${params.id}`);
     const resJson = await res.json();
 
     return {

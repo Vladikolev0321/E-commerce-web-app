@@ -37,7 +37,7 @@ export default function Home(props) {
 
 
 export async function getServerSideProps() {
-  const res = await fetch(`http://localhost:3001/products`);
+  const res = await fetch(`${process.env.SERVER_URL}/products`);
   const resJson = await res.json();
   const products = resJson.products;
   console.log("products", products);

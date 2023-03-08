@@ -39,7 +39,7 @@ const Cart = () => {
 
 
     console.log("checkout");
-    const res = await fetch(`http://localhost:3001/order`, {
+    const res = await fetch(`${process.env.SERVER_URL}/order`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -116,7 +116,7 @@ const Cart = () => {
               <Table.Body items={cart}>
                 {(item) => (
                   <Table.Row key={item._id}>
-                    <Table.Cell><Image width={100} height={100} src={item.images[0].url} /></Table.Cell>
+                    <Table.Cell><Image width={100} height={100} src={item.images[0].url} alt={item.name} /></Table.Cell>
                     <Table.Cell>{item.name}</Table.Cell>
                     <Table.Cell>${item.price}</Table.Cell>
                     <Table.Cell>

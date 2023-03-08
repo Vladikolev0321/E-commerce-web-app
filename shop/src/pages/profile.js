@@ -1,5 +1,5 @@
 import { setOrders } from "@/store/orders.slice";
-import { Button, Card, Col, Row, Spacer, Table, Text } from "@nextui-org/react";
+import { Badge, Button, Card, Col, Row, Spacer, Table, Text } from "@nextui-org/react";
 import { getSession, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -14,8 +14,8 @@ const Profile = ({ orders }) => {
 
     if (!session) return null;
 
-    const dispatch = useDispatch();
-    dispatch(setOrders(orders));
+    // const dispatch = useDispatch();
+    // dispatch(setOrders(orders));
 
 
 
@@ -58,8 +58,8 @@ const Profile = ({ orders }) => {
                                             day: "numeric",
                                         })}</Table.Cell>
                                         <Table.Cell>${item.totalPrice}</Table.Cell>
-                                        <Table.Cell>{String(item.isDelivered)}</Table.Cell>
-                                        <Table.Cell>{String(item.paid)}</Table.Cell>
+                                        <Table.Cell>{item.isDelivered ? <Badge color="success">DELIVERED</Badge> : <Badge color={"error"}>NOT DELIVERED</Badge>}</Table.Cell>
+                                        <Table.Cell>{item.paid ? <Badge color="success">PAID</Badge> : <Badge color={"error"}>NOT PAID</Badge>}</Table.Cell>
                                         <Table.Cell><Button as={Link} href={`/orders/${item._id}`} auto>Details</Button></Table.Cell>
 
                                         {/* <Table.Cell><Image width={100} height={100} src={item.images[0].url} /></Table.Cell>
@@ -99,10 +99,10 @@ export async function getServerSideProps(context) {
         };
     }
     console.log("session", session)
-    const res = await fetch(`http://localhost:3001/orders`, {
+    const res = await fetch(`${process.env.SERVER_URL}/orders`, {
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${session.accessToken}`,
+            "Authorization": `Bearer ${session.accessToken}`,
         },
     });
     const resJson = await res.json();

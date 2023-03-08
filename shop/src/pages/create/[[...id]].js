@@ -69,7 +69,7 @@ const CreateProduct = () => {
             }
 
 
-            const res = await fetch(`http://localhost:3001/product`, {
+            const res = await fetch(`${process.env.SERVER_URL}/product`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

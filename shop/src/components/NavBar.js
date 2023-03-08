@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { useSession, signOut } from "next-auth/react";
 import { MdShoppingCart } from "react-icons/md";
 import { AiOutlineShoppingCart } from "react-icons/ai";
+import { useSelector } from "react-redux";
 
 const NavBar = () => {
   const { data: session, status } = useSession();
@@ -11,6 +12,9 @@ const NavBar = () => {
   const isActive = (path) => {
     return router.pathname === path;
   };
+  const cart = useSelector(state => state.cart);
+
+  const quantity = 2;
   return (
     <Navbar isBordered variant="floating">
       <Navbar.Content hideIn="xs" variant="highlight-rounded">
@@ -18,7 +22,27 @@ const NavBar = () => {
       </Navbar.Content>
 
       <Navbar.Content hideIn="xs" variant="highlight-rounded">
-        <Navbar.Link as={Link} isActive={isActive("/cart")} href="/cart"><MdShoppingCart size={10}/></Navbar.Link>
+        <Navbar.Link as={Link}  href="/cart">
+          <div style={{ position: "relative" }}>
+            <MdShoppingCart size={10} />
+            {cart.length > 0 && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: -8,
+                  right: -8,
+                  backgroundColor: "red",
+                  color: "white",
+                  borderRadius: "50%",
+                  fontSize: "0.8rem",
+                  padding: "2px 6px",
+                }}
+              >
+                {cart.length}
+              </div>
+            )}
+          </div>
+        </Navbar.Link>
         {session ? (
           <>
             {session.user.role === "admin" && (
@@ -30,7 +54,7 @@ const NavBar = () => {
             )
             }
             <Navbar.Link as={Link} isActive={isActive("/profile")} href="/profile">Profile</Navbar.Link>
-            <Button auto flat onClick={signOut}>Logout</Button>
+            <Button auto flat onClick={() => { signOut(); }}>Logout</Button>
           </>
         ) : (
           <>

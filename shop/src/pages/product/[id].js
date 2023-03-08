@@ -62,7 +62,7 @@ const ProductDetails = ({ product }) => {
 };
 
 export async function getServerSideProps({ params: { id } }) {
-    const res = await fetch(`http://localhost:3001/products/${id}`);
+    const res = await fetch(`${process.env.SERVER_URL}/products/${id}`);
     const resJson = await res.json();
 
     return {

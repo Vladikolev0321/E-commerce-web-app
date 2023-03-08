@@ -56,7 +56,7 @@ export async function getServerSideProps(context) {
         };
     }
 
-    const res = await fetch(`http://localhost:3001/all-orders`, {
+    const res = await fetch(`${process.env.SERVER_URL}/all-orders`, {
         headers: {
             Authorization: `Bearer ${session.accessToken}`,
         },

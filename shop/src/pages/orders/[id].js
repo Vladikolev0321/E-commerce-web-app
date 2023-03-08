@@ -99,7 +99,7 @@ const OrderDetails = ( {order} ) => {
                                 <Row key={item._id} align="middle">
                                     <Col span={6}>
                                         {/* <Card css={{ width: 100, height: 100}}><Card.Image src={item.images[0].url} width={'100%'} height={'100%'} /> </Card> */}
-                                        <Image src={item.images[0].url} width={100} height={100} />
+                                        <Image src={item.images[0].url} width={100} height={100} alt={item.name} />
                                     </Col>
                                     <Col span={18}>
                                         <Text h4>{item.name}</Text>
@@ -124,8 +124,6 @@ const OrderDetails = ( {order} ) => {
     );
 };
 
-// TODO: Add getServerSideProps to fetch order details
-
 export async function getServerSideProps(context) {
     const { params } = context;
     const { id } = params;
@@ -139,7 +137,7 @@ export async function getServerSideProps(context) {
             },
         };
     }
-    const order = await fetch(`http://localhost:3001/orders/${id}`, {
+    const order = await fetch(`${process.env.SERVER_URL}/orders/${id}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -150,7 +148,6 @@ export async function getServerSideProps(context) {
 
     const orderData = await order.json();
     console.log("order", orderData  );
-
 
     return {
         props: {
