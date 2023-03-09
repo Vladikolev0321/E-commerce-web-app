@@ -1,4 +1,4 @@
-import { Navbar, Button, Text } from "@nextui-org/react";
+import { Navbar, Button, Text, useTheme, Dropdown } from "@nextui-org/react";
 import Link from "next/link";
 import { useRouter } from 'next/router'
 import { useSession, signOut } from "next-auth/react";
@@ -13,16 +13,17 @@ const NavBar = () => {
     return router.pathname === path;
   };
   const cart = useSelector(state => state.cart);
+  const isDark = useTheme();
 
   const quantity = 2;
   return (
-    <Navbar isBordered variant="floating">
+    <Navbar shouldHideOnScroll isBordered={isDark} variant="floating">
       <Navbar.Content hideIn="xs" variant="highlight-rounded">
         <Navbar.Link as={Link} isActive={isActive("/")} href="/">Features</Navbar.Link>
       </Navbar.Content>
 
       <Navbar.Content hideIn="xs" variant="highlight-rounded">
-        <Navbar.Link as={Link}  href="/cart">
+        <Navbar.Link as={Link} href="/cart">
           <div style={{ position: "relative" }}>
             <MdShoppingCart size={10} />
             {cart.length > 0 && (
@@ -47,9 +48,35 @@ const NavBar = () => {
           <>
             {session.user.role === "admin" && (
               <>
-                <Navbar.Link as={Link} isActive={isActive("/create")} href="/create">Admin</Navbar.Link>
-                <Navbar.Link as={Link} isActive={isActive("/products-admin")} href="/products-admin">Products</Navbar.Link>
-                <Navbar.Link as={Link} isActive={isActive("/orders")} href="/orders">Orders</Navbar.Link>
+                <Dropdown>
+                  <Navbar.Item>
+                    <Dropdown.Button auto
+                      light
+                      css={{
+                        px: 0,
+                        dflex: "center",
+                        svg: { pe: "none" },
+                      }}
+                      ripple={false}>Admin</Dropdown.Button>
+                  </Navbar.Item>
+                  <Dropdown.Menu
+                    aria-label="ACME features"
+                    css={{
+                      $$dropdownMenuWidth: "100px",
+                      $$dropdownItemHeight: "40px",
+                      "& .nextui-dropdown-item": {
+                        "& .nextui-dropdown-item-content": {
+                          w: "100%",
+                          fontWeight: "$semibold",
+                        },
+                      },
+                    }}
+                  >
+                    <Dropdown.Item><Navbar.Link as={Link} isActive={isActive("/create")} href="/create">Create</Navbar.Link></Dropdown.Item>
+                    <Dropdown.Item><Navbar.Link as={Link} isActive={isActive("/products-admin")} href="/products-admin">Products</Navbar.Link></Dropdown.Item>
+                    <Dropdown.Item><Navbar.Link as={Link} isActive={isActive("/orders")} href="/orders">Orders</Navbar.Link></Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
               </>
             )
             }

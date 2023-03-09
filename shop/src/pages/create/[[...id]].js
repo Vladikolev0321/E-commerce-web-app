@@ -26,7 +26,6 @@ const CreateProduct = () => {
         reader.onload = function (onLoadEvent) {
             setImageSrc(onLoadEvent.target.result);
         }
-
         reader.readAsDataURL(e.target.files[0]);
     }
 
@@ -67,7 +66,6 @@ const CreateProduct = () => {
                 toast.error("Please fill in all fields");
                 return;
             }
-
 
             const res = await fetch(`${process.env.SERVER_URL}/product`, {
                 method: "POST",
