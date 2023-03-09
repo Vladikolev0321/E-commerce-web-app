@@ -1,5 +1,5 @@
 import { setOrders } from "@/store/orders.slice";
-import { Badge, Button, Card, Col, Row, Spacer, Table, Text } from "@nextui-org/react";
+import { Avatar, Badge, Button, Card, Col, Divider, Grid, Row, Spacer, Table, Text } from "@nextui-org/react";
 import { getSession, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -13,77 +13,60 @@ const Profile = ({ orders }) => {
     console.log("session", session);
 
     if (!session) return null;
-
-    // const dispatch = useDispatch();
-    // dispatch(setOrders(orders));
-
-
-
     return (
         <>
-            <h1>Profile Page</h1>
-            <Row>
-                <Col>
-                    <Card>
-                        <Text h3>Profile</Text>
-                        <Text>Username: {session.user.name}</Text>
-                        <Text>Email: {session.user.email}</Text>
-                    </Card>
-                </Col>
-                <Spacer x={2} />
-                <Col>
-                    <Card>
-                        <Text h3>Orders</Text>
-                        <Table
-                            aria-label="cart table"
-                            css={{
-                                height: "auto",
-                                minWidth: "100%",
-                                width: 700,
-                            }}
-                        >
-                            <Table.Column>ID</Table.Column>
-                            <Table.Column>DATE</Table.Column>
-                            <Table.Column>TOTAL</Table.Column>
-                            <Table.Column>DELIVERED</Table.Column>
-                            <Table.Column>PAID</Table.Column>
-                            <Table.Column>ACTION</Table.Column>
-                            <Table.Body items={orders}>
-                                {(item) => (
-                                    <Table.Row key={item._id}>
-                                        <Table.Cell>{item._id}</Table.Cell>
-                                        <Table.Cell>{new Date(item.createdAt).toLocaleDateString("en-US", {
-                                            year: "numeric",
-                                            month: "long",
-                                            day: "numeric",
-                                        })}</Table.Cell>
-                                        <Table.Cell>${item.totalPrice}</Table.Cell>
-                                        <Table.Cell>{item.isDelivered ? <Badge color="success">DELIVERED</Badge> : <Badge color={"error"}>NOT DELIVERED</Badge>}</Table.Cell>
-                                        <Table.Cell>{item.paid ? <Badge color="success">PAID</Badge> : <Badge color={"error"}>NOT PAID</Badge>}</Table.Cell>
-                                        <Table.Cell><Button as={Link} href={`/orders/${item._id}`} auto>Details</Button></Table.Cell>
+        <Card css={
+                    {
+                        width: "50%",
+                        height: "100%",
+                        padding: "1rem",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }
+                }>
+                    <Text h3 b>Profile</Text>
+                    <Avatar src={"https://api-private.atlassian.com/users/97bc37c989b435233b603890fe94c982/avatar"} size="lg" />
+                    <Text><b>Username:</b> {session.user.name}</Text>
+                    <Text><b>Email:</b> {session.user.email}</Text>
 
-                                        {/* <Table.Cell><Image width={100} height={100} src={item.images[0].url} /></Table.Cell>
-                                        <Table.Cell>{item.title}</Table.Cell>
-                                        <Table.Cell>{item.price}</Table.Cell>
-                                        <Table.Cell>
-                                            <Row>
-                                                <Button size="xs" color="error" auto onPress={() => dispatch(decrementQuantity(item._id))}>-</Button>
-                                                <Spacer x={0.5} />
-                                                {item.quantity}
-                                                <Spacer x={0.5} />
-                                                <Button size="xs" color="success" auto onPress={() => dispatch(incrementQuantity(item._id))}>+</Button>
-                                            </Row>
-                                        </Table.Cell>
-                                        <Table.Cell><Button color="error" auto onPress={() => dispatch(removeFromCart(item._id))}>Remove</Button></Table.Cell> */}
 
-                                        {/* {(columnKey) => <Table.Cell>{item[columnKey]}</Table.Cell>} */}
-                                    </Table.Row>
-                                )}
-                            </Table.Body>
-                        </Table>
-                    </Card>
-                </Col>
-            </Row>
+                    <Spacer y={2} />
+
+                    <Text h3>Orders</Text>
+                    <Table
+                        aria-label="cart table"
+                        css={{
+                            height: "auto",
+                            minWidth: "100%",
+                            width: 700,
+                        }}
+                    >
+                        <Table.Column>ID</Table.Column>
+                        <Table.Column>DATE</Table.Column>
+                        <Table.Column>TOTAL</Table.Column>
+                        <Table.Column>DELIVERED</Table.Column>
+                        <Table.Column>PAID</Table.Column>
+                        <Table.Column>ACTION</Table.Column>
+                        <Table.Body items={orders}>
+                            {(item) => (
+                                <Table.Row key={item._id}>
+                                    <Table.Cell>{item._id}</Table.Cell>
+                                    <Table.Cell>{new Date(item.createdAt).toLocaleDateString("en-US", {
+                                        year: "numeric",
+                                        month: "long",
+                                        day: "numeric",
+                                    })}</Table.Cell>
+                                    <Table.Cell>${item.totalPrice}</Table.Cell>
+                                    <Table.Cell>{item.isDelivered ? <Badge color="success">DELIVERED</Badge> : <Badge color={"error"}>NOT DELIVERED</Badge>}</Table.Cell>
+                                    <Table.Cell>{item.paid ? <Badge color="success">PAID</Badge> : <Badge color={"error"}>NOT PAID</Badge>}</Table.Cell>
+                                    <Table.Cell><Button as={Link} href={`/orders/${item._id}`} auto>Details</Button></Table.Cell>
+                                </Table.Row>
+                            )}
+                        </Table.Body>
+                    </Table>
+                </Card>
         </>
     );
 }
