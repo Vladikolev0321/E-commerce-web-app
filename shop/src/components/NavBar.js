@@ -5,6 +5,7 @@ import { useSession, signOut } from "next-auth/react";
 import { MdShoppingCart } from "react-icons/md";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { useSelector } from "react-redux";
+import  MobileNavBar  from "./MobileNavBar";
 
 const NavBar = () => {
   const { data: session, status } = useSession();
@@ -15,13 +16,11 @@ const NavBar = () => {
   const cart = useSelector(state => state.cart);
   const isDark = useTheme();
 
-  const quantity = 2;
   return (
-    <Navbar shouldHideOnScroll isBordered={isDark} variant="floating">
+    <Navbar isBordered={isDark} variant="floating" color="black">
       <Navbar.Content hideIn="xs" variant="highlight-rounded">
         <Navbar.Link as={Link} isActive={isActive("/")} href="/">Features</Navbar.Link>
       </Navbar.Content>
-
       <Navbar.Content hideIn="xs" variant="highlight-rounded">
         <Navbar.Link as={Link} href="/cart">
           <div style={{ position: "relative" }}>
@@ -60,7 +59,7 @@ const NavBar = () => {
                       ripple={false}>Admin</Dropdown.Button>
                   </Navbar.Item>
                   <Dropdown.Menu
-                    aria-label="ACME features"
+                    aria-label="Admin dropdown"
                     css={{
                       $$dropdownMenuWidth: "100px",
                       $$dropdownItemHeight: "40px",
@@ -97,6 +96,8 @@ const NavBar = () => {
         )}
 
       </Navbar.Content>
+      <MobileNavBar session={session} isActive={isActive}/>
+
     </Navbar >
   )
 };

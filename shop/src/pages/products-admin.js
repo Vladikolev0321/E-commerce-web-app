@@ -19,11 +19,9 @@ const ProductsAdmin = ({ products }) => {
 
     const closeHandler = () => {
         setVisible(false);
-        console.log("closed");
     };
 
     const deleteProduct = async () => {
-        console.log("delete", currId);
         const res = await fetch(`${process.env.SERVER_URL}/product/${currId}`, {
             method: "DELETE",
             headers: {
@@ -33,7 +31,6 @@ const ProductsAdmin = ({ products }) => {
         });
 
         const resJson = await res.json();
-        console.log("resJson", resJson);
         if(res.ok){
             toast.success("Deleted product");
             products = products.filter(product => product._id !== currId);
@@ -125,8 +122,6 @@ export async function getServerSideProps(context) {
     const res = await fetch(`${process.env.SERVER_URL}/products`);
     const resJson = await res.json();
     const products = resJson.products;
-
-    console.log("products", products);
     return {
         props: { products },
     };

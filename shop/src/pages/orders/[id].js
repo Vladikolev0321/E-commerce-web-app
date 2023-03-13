@@ -7,16 +7,7 @@ import { useSelector } from "react-redux";
 
 const OrderDetails = ( {order} ) => {
     const { data: session, status } = useSession();
-    // const { orders } = useSelector((state) => state.orders);
-
-    // const [order, setOrder] = useState({});
     const router = useRouter();
-
-    // const order = orders.find((order) => order._id === router.query.id);
-    // console.log("order", order);
-
-
-    // TODO: Add check for session
     if(!session){
         return null;
     }
@@ -144,11 +135,8 @@ export async function getServerSideProps(context) {
             "Authorization": `Bearer ${session.accessToken}`
         },
     });
-    console.log("order", order);
 
     const orderData = await order.json();
-    console.log("order", orderData  );
-
     return {
         props: {
             order: orderData.order,

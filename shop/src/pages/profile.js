@@ -9,9 +9,6 @@ const Profile = ({ orders }) => {
     const { data: session, status } = useSession();
     const router = useRouter();
 
-    console.log("status", status);
-    console.log("session", session);
-
     if (!session) return null;
     return (
         <>
@@ -81,7 +78,6 @@ export async function getServerSideProps(context) {
             },
         };
     }
-    console.log("session", session)
     const res = await fetch(`${process.env.SERVER_URL}/orders`, {
         headers: {
             "Content-Type": "application/json",
@@ -89,7 +85,6 @@ export async function getServerSideProps(context) {
         },
     });
     const resJson = await res.json();
-    console.log("resJson", resJson);
     return {
         props: { orders: resJson },
     };

@@ -63,8 +63,6 @@ export async function getServerSideProps(context) {
     });
     const resJson = await res.json();
     const orders = resJson.orders;
-
-    console.log("orders", orders);
     return {
         props: { orders },
     };

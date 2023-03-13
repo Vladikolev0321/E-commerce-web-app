@@ -1,5 +1,5 @@
 import { decrementQuantity, incrementQuantity, removeAllFromCart, removeFromCart } from "@/store/cart.slice";
-import { Button, Card, Col, Grid, Image, Input, red, Row, Spacer, Table, Text } from "@nextui-org/react";
+import { Button, Card, Col, Container, Grid, Image, Input, red, Row, Spacer, Table, Text } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -9,7 +9,6 @@ import { toast } from "react-toastify";
 const Cart = () => {
   const { status, data } = useSession();
   const cart = useSelector(state => state.cart);
-  console.log("cart", cart);
 
   const dispatch = useDispatch();
   const [total, setTotal] = useState(0);
@@ -37,8 +36,6 @@ const Cart = () => {
       return;
     }
 
-
-    console.log("checkout");
     const res = await fetch(`${process.env.SERVER_URL}/order`, {
       method: "POST",
       headers: {
@@ -54,7 +51,6 @@ const Cart = () => {
     });
 
     const resJson = await res.json();
-    console.log("resJson", resJson);
 
     if (res.status === 201) {
       toast.success("Order placed successfully");
@@ -70,7 +66,6 @@ const Cart = () => {
   const columns = [
     {
       key: "image",
-      // label: "IMAGE",
     },
     {
       key: "title",
@@ -96,6 +91,8 @@ const Cart = () => {
   return (
     <>
       <h1>Shopping Cart</h1>
+      <Container>
+        
       <Grid.Container gap={4} justify="center">
 
         <Grid xs={12} sm={10}>
@@ -163,6 +160,8 @@ const Cart = () => {
           </Col>
         </Grid>
       </Grid.Container>
+      
+      </Container>
 
       {/* </Row> */}
     </>

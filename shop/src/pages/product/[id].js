@@ -5,16 +5,7 @@ import { useContext, useState } from "react"
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 
-
-
 const ProductDetails = ({ product }) => {
-    // const [tab, setTab] = useState(0);
-
-    // const isActive = (index) => {
-    //     if (tab === index) return 'active';
-    //     return '';
-    // };
-
     const dispatch = useDispatch();
     const handleAddToCart = () => {
         dispatch(addToCart(product));
@@ -29,13 +20,6 @@ const ProductDetails = ({ product }) => {
                         <Col>
                             <Card>
                                 <Image src={product.images[0].url} width="100%" height="100%" objectFit="cover" alt={product.images[0].url} />
-                                {/* <Row>
-                                {product.images.map((image, index) => (
-                                    // <Col key={index}>
-                                        <Image src={image.url} width="100%" height="100%" objectFit="cover" alt={image.url} />
-                                    // </Col>
-                                ))}
-                            </Row> */}
                             </Card>
                         </Col>
                     </Grid>

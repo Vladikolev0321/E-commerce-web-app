@@ -26,39 +26,29 @@ const SignIn = () => {
   const router = useRouter();
 
   const handleSubmit = async () => {
-    console.log('submit');
-    console.log(userData);
     const errorMsg = validateUserData(userData.email, userData.password);
     if (errorMsg) {
-      // TODO: show error message
       setError(errorMsg);
-      console.log(errorMsg);
       return;
     }
 
     const res = await signIn('credentials', {
       email: userData.email,
       password: userData.password,
-      redirect: false,
-      // callbackUrl: 'http://localhost:3000/',
+      redirect: false
     });
-    console.log(res);
 
-    res.status !== 200
     if (res.status !== 200) {
-      console.log(res.error);
       toast.error(res.error);
       return;
     }
 
     toast.success("Successfully logged in");
     router.replace('/');
-    console.log(res);
   };
 
   const handleChangeInput = e => {
     const { name, value } = e.target;
-    console.log(name, value);
     setUserData({ ...userData, [name]: value });
   };
 
@@ -86,7 +76,7 @@ const SignIn = () => {
         justify="center"
         css={{ minHeight: '100vh', minWidth: '20vw'}}
       >
-        <Card css={{ mw: '420px', p: '20px' }}>
+        <Card css={{ mw: '420px', p: '20px', minWidth: '300px' }}>
           <Text
             size={24}
             weight="bold"
@@ -137,7 +127,7 @@ const SignIn = () => {
           <Button aria-label="Sign in" onClick={handleSubmit}>Sign in</Button>
           <Spacer y={1} />
           <Text size={14} css={{ as: 'center' }} aria-label="Don't have an account?">
-            Don&apos;t have an account?
+            Don&apos;t have an account?{' '}
             <NextLink as={Link} href="/register">Sign up</NextLink>
           </Text>
         </Card>

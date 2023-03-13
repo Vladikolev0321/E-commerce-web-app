@@ -16,15 +16,12 @@ const Register = () => {
 
     const handleChangeInput = e => {
         const { name, value } = e.target;
-        console.log(name, value);
         setUserData({ ...userData, [name]: value });
     };
 
     const handleSubmit = async () => {
-        console.log(userData);
         const errorMsg = validateUserData(name, email, password, conf_password);
         if (errorMsg) {
-            console.log(errorMsg);
             setError(errorMsg);
             return;
         }
@@ -40,7 +37,6 @@ const Register = () => {
                 body: JSON.stringify(userData),
             });
             const data = await res.json();
-            console.log(data);
             if (res.ok) {
                 toast.success("Successfully registered");
                 router.replace('/signin');
@@ -49,7 +45,7 @@ const Register = () => {
             }
 
         } catch (err) {
-            console.log(err);
+            toast.error(err.message);
         }
     };
 
@@ -87,7 +83,7 @@ const Register = () => {
                 justify="center"
                 css={{ minHeight: '100vh' }}
             >
-                <Card css={{ mw: '420px', p: '20px' }}>
+                <Card css={{ mw: '420px', p: '20px', minWidth: '300px' }}>
                     <Text
                         size={24}
                         weight="bold"

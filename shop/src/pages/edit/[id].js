@@ -17,14 +17,12 @@ const EditProduct = ({ product: initialProduct }) => {
     }
 
     const handleOnUpload = (e) => {
-        const file = event.target.files[0];
+        const file = e.target.files[0];
         setSelectedImage(URL.createObjectURL(file));
         const reader = new FileReader();
 
         reader.onload = function (onLoadEvent) {
-            // setImageSrc(onLoadEvent.target.result);
             setProduct({ ...product, images: [onLoadEvent.target.result] });
-            // setUploadData(undefined);
         }
 
         reader.readAsDataURL(e.target.files[0]);
@@ -34,20 +32,17 @@ const EditProduct = ({ product: initialProduct }) => {
     const handleSubmit = async () => {
         try {
             const formData = new FormData()
-            console.log("product.images[0]:", product.images[0])
             formData.append("file", product.images[0])
 
             formData.append("upload_preset", "ml_default")
 
             const cloudName = process.env.NEXT_PUBLIC_CLOUD_NAME;
-            console.log("cloudName:", cloudName);
             const resUpload = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
                 method: "POST",
                 body: formData
             })
 
             const dataUpload = await resUpload.json();
-            console.log("data:", dataUpload);
             if (dataUpload.error) {
                 toast.error(dataUpload.error.message);
                 return;
@@ -110,18 +105,11 @@ const EditProduct = ({ product: initialProduct }) => {
                     value={product.description}
                     onChange={handleChangeInput}
                 />
-                {/* <Spacer y={1} />
-                <Input clearable bordered fullWidth color="primary" size="lg"
-                    placeholder="Content" aria-label="Content" name="content"
-                    value={product.content}
-                    // onChange={handleChangeInput}
-                /> */}
                 <Spacer y={1} />
                 <Card><Card.Image src={selectedImage ? selectedImage : product.images[0].url} width={'100%'} height={'100%'} /> </Card>
                 <Spacer y={1} />
                 <Input fullWidth color="primary" size="lg"
                     placeholder="Image" aria-label="Image" name="images" type={"file"} label="Image"
-                    // value={product.images[0]}
                     onChange={handleOnUpload}
                 />
                 <Spacer y={1} />
@@ -142,7 +130,6 @@ export async function getServerSideProps(context) {
             },
         };
     }
-    // TODO: get product from database and pass as prop
     const res = await fetch(`${process.env.SERVER_URL}/products/${params.id}`);
     const resJson = await res.json();
 

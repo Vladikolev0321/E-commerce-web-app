@@ -32,20 +32,17 @@ const CreateProduct = () => {
     const handleSubmit = async () => {
         try {
             const formData = new FormData()
-            console.log("product.images[0]:", imageSrc)
             formData.append("file", imageSrc)
 
             formData.append("upload_preset", "ml_default")
 
             const cloudName = process.env.NEXT_PUBLIC_CLOUD_NAME;
-            console.log("cloudName:", cloudName);
             const resUpload = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
                 method: "POST",
                 body: formData
             })
 
             const data = await resUpload.json();
-            console.log("data:", data);
             if (data.error) {
                 toast.error(data.error.message);
                 return;
@@ -58,7 +55,6 @@ const CreateProduct = () => {
             });
 
             setProduct({ ...product, images });
-            console.log("product:", product);
 
             const { name, price, countInStock, description } = product;
             if (!name || !price || !countInStock || !description || !images) {
@@ -77,7 +73,6 @@ const CreateProduct = () => {
             });
 
             const dataRes = await res.json();
-            console.log("dataRes:", dataRes);
             if (res.status === 201) {
                 toast.success("Product created successfully");
                 router.replace('/');
@@ -85,7 +80,7 @@ const CreateProduct = () => {
                 toast.error(dataRes.message);
             }
         } catch (error) {
-            console.log(error);
+            toast.error(error.message);
         }
     }
     //TODOL remove
@@ -99,7 +94,7 @@ const CreateProduct = () => {
             justify="center"
             css={{ minHeight: '100vh', minWidth: '20vw', maxHeight: '100vh', maxW: '40vw' }}>
             <h1>Create Product</h1>
-            <Card css={{ mw: '420px', p: '20px', minWidth: '450px' }}>
+            <Card css={{ mw: '420px', p: '20px', minWidth: '300px' }}>
                 {error && (
                     <Text color="error" css={{ textAlign: 'center', my: '10px' }}>
                         {error}
