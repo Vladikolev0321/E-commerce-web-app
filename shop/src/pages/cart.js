@@ -138,6 +138,7 @@ const Cart = () => {
                     {error}
                   </Text>
                 )}
+                <Text h3>Shipping Address</Text>
                 <Input width="120px" clearable bordered fullWidth color="primary" size="lg"
                   placeholder="Address" aria-label="Address" name="address"
                   value={address} onChange={e => setAddress(e.target.value)}
