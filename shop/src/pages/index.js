@@ -16,7 +16,6 @@ export default function Home(props) {
       <Head>
         <title>Shop app</title>
       </Head>
-      <h1>Products</h1>
       <Container >
         <Grid.Container gap={4} justify="flex-start"  >
           {

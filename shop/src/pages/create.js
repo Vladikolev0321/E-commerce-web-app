@@ -93,8 +93,18 @@ const CreateProduct = () => {
             alignItems="center"
             justify="center"
             css={{ minHeight: '100vh', minWidth: '20vw', maxHeight: '100vh', maxW: '40vw' }}>
-            <h1>Create Product</h1>
             <Card css={{ mw: '420px', p: '20px', minWidth: '300px' }}>
+                <Text
+                    size={24}
+                    weight="bold"
+                    css={{
+                        as: 'center',
+                        mb: '20px',
+                    }}
+                    aria-label="Create Product"
+                >
+                    Create Product
+                </Text>
                 {error && (
                     <Text color="error" css={{ textAlign: 'center', my: '10px' }}>
                         {error}

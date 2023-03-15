@@ -1,4 +1,4 @@
-import { Button, Card, Image, Input, Spacer, Textarea } from "@nextui-org/react";
+import { Button, Card, Image, Input, Spacer, Text, Textarea } from "@nextui-org/react";
 import { getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -56,8 +56,6 @@ const EditProduct = ({ product: initialProduct }) => {
 
             setProduct({ ...product, images });
 
-
-
             const res = await fetch(`${process.env.SERVER_URL}/product/${id}`, {
                 method: "PUT",
                 headers: {
@@ -79,9 +77,18 @@ const EditProduct = ({ product: initialProduct }) => {
     }
     return (
         <>
-            <h1>Edit Product</h1>
-            <h2>id: {id}</h2>
             <Card css={{ mw: '420px', p: '20px', minWidth: '450px' }}>
+                <Text
+                    size={24}
+                    weight="bold"
+                    css={{
+                        as: 'center',
+                        mb: '20px',
+                    }}
+                    aria-label="Edit Product"
+                >
+                    Edit Product
+                </Text>
                 <Input clearable bordered fullWidth color="primary" size="lg"
                     placeholder="Name" aria-label="Name" name="name" label="Name"
                     value={product.name}
