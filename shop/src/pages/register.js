@@ -150,7 +150,7 @@ const Register = () => {
                     <Spacer y={1} />
                     <Button
                         aria-label="Register"
-                        onClick={handleSubmit}
+                        onPress={handleSubmit}
                     >
                         Register
                     </Button>

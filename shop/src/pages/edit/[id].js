@@ -31,31 +31,34 @@ const EditProduct = ({ product: initialProduct }) => {
 
     const handleSubmit = async () => {
         try {
-            const formData = new FormData()
-            formData.append("file", product.images[0])
+            if (selectedImage) {
+                const formData = new FormData()
+                formData.append("file", product.images[0])
 
-            formData.append("upload_preset", "ml_default")
+                formData.append("upload_preset", "ml_default")
 
-            const cloudName = process.env.NEXT_PUBLIC_CLOUD_NAME;
-            const resUpload = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
-                method: "POST",
-                body: formData
-            })
+                const cloudName = process.env.NEXT_PUBLIC_CLOUD_NAME;
+                const resUpload = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+                    method: "POST",
+                    body: formData
+                })
 
-            const dataUpload = await resUpload.json();
-            if (dataUpload.error) {
-                toast.error(dataUpload.error.message);
-                return;
+                const dataUpload = await resUpload.json();
+                if (dataUpload.error) {
+                    toast.error(dataUpload.error.message);
+                    return;
+                }
+                const { public_id, secure_url } = dataUpload;
+                const images = [];
+                images.push({
+                    public_id,
+                    url: secure_url
+                });
+
+                setProduct({ ...product, images });
             }
-            const { public_id, secure_url } = dataUpload;
-            const images = [];
-            images.push({
-                public_id,
-                url: secure_url
-            });
 
-            setProduct({ ...product, images });
-
+            console.log(product);
             const res = await fetch(`${process.env.SERVER_URL}/product/${id}`, {
                 method: "PUT",
                 headers: {

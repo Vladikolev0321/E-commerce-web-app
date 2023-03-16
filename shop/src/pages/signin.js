@@ -124,7 +124,7 @@ const SignIn = () => {
             <Text size={14} aria-label="Forgot password?">Forgot password?</Text>
           </Row>
           <Spacer y={1} />
-          <Button aria-label="Sign in" onClick={handleSubmit}>Sign in</Button>
+          <Button aria-label="Sign in" onPress={handleSubmit}>Sign in</Button>
           <Spacer y={1} />
           <Text size={14} css={{ as: 'center' }} aria-label="Don't have an account?">
             Don&apos;t have an account?{' '}

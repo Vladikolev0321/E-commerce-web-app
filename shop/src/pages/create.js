@@ -56,6 +56,7 @@ const CreateProduct = () => {
 
             setProduct({ ...product, images });
 
+
             const { name, price, countInStock, description } = product;
             if (!name || !price || !countInStock || !description || !images) {
                 setError("Please fill in all fields");

@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 const { Grid, Table, Button, Row, Spacer, Image, Modal, Card } = require("@nextui-org/react");
 
 const ProductsAdmin = ({ products }) => {
+    const [allProducts, setAllProducts] = useState(products);
     const {data: session, status} = useSession();
     const [visible, setVisible] = useState(false);
     const [currId, setId] = useState("");
@@ -34,6 +35,8 @@ const ProductsAdmin = ({ products }) => {
         if(res.ok){
             toast.success("Deleted product");
             products = products.filter(product => product._id !== currId);
+            setAllProducts(products);
+
         } else {
             toast.error(resJson.message);
         }
@@ -63,7 +66,7 @@ const ProductsAdmin = ({ products }) => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-            { products.length === 0 ? <h2>No products</h2> : (
+            { allProducts.length === 0 ? <h2>No products</h2> : (
             <Table
                 aria-label="cart table"
                 css={{
@@ -81,7 +84,7 @@ const ProductsAdmin = ({ products }) => {
                 </Table.Header>
                 <Table.Body>
                     {
-                            products.map(product =>
+                            allProducts.map(product =>
                             (
                                 <Table.Row key={product._id}>
                                     <Table.Cell><Card css={{maxWidth:200, maxHeight: 150}}><Card.Image width={'100%'} height={'100%'} src={product.images[0].url} /></Card></Table.Cell>
