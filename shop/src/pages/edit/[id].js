@@ -8,6 +8,7 @@ const EditProduct = ({ product: initialProduct }) => {
     const router = useRouter();
     const { id } = router.query;
     const [product, setProduct] = useState(initialProduct);
+    const [imageSrc, setImageSrc] = useState("");
     const { data: session, status } = useSession();
     const [selectedImage, setSelectedImage] = useState("");
 
@@ -22,7 +23,8 @@ const EditProduct = ({ product: initialProduct }) => {
         const reader = new FileReader();
 
         reader.onload = function (onLoadEvent) {
-            setProduct({ ...product, images: [onLoadEvent.target.result] });
+            // setProduct({ ...product, images: [onLoadEvent.target.result] });
+            setImageSrc(onLoadEvent.target.result);
         }
 
         reader.readAsDataURL(e.target.files[0]);
@@ -31,9 +33,9 @@ const EditProduct = ({ product: initialProduct }) => {
 
     const handleSubmit = async () => {
         try {
-            if (selectedImage) {
+            if (imageSrc) {
                 const formData = new FormData()
-                formData.append("file", product.images[0])
+                formData.append("file", imageSrc)
 
                 formData.append("upload_preset", "ml_default")
 
@@ -58,7 +60,6 @@ const EditProduct = ({ product: initialProduct }) => {
                 setProduct({ ...product, images });
             }
 
-            console.log(product);
             const res = await fetch(`${process.env.SERVER_URL}/product/${id}`, {
                 method: "PUT",
                 headers: {
