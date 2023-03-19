@@ -1,11 +1,13 @@
 import { addToCart } from "@/store/cart.slice";
 import { Col, Container, Row, Text, Grid, Image, Button, Spacer, Card } from "@nextui-org/react"
+import { useSession } from "next-auth/react";
 import Head from "next/head"
 import { useContext, useState } from "react"
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 
 const ProductDetails = ({ product }) => {
+    const { data: session, status } = useSession();
     const dispatch = useDispatch();
     const handleAddToCart = () => {
         dispatch(addToCart(product));
@@ -34,9 +36,16 @@ const ProductDetails = ({ product }) => {
                             }
                             <Text >{product.description}</Text>
                             <Spacer y={1} />
-                            <Button color="success" disabled={!(product.countInStock > 0)} shadow onPress={handleAddToCart}>
-                                <Text color="white"> Buy </Text>
-                            </Button>
+                            {session && session.user.role !== "admin" && (
+                                <Button color="success" disabled={!(product.countInStock > 0)} shadow onPress={handleAddToCart}>
+                                    <Text color="white"> Buy </Text>
+                                </Button>)
+                            }
+                            {!session && (
+                                <Button color="success" disabled={!(product.countInStock > 0)} shadow onPress={handleAddToCart}>
+                                    <Text color="white"> Buy </Text>
+                                </Button>
+                            )}
                         </Col>
                     </Grid>
                 </Grid.Container>
