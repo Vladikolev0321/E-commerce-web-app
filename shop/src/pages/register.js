@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import ParticleBackground from "@/components/particlesBackground";
+import ParticleBackground from "@/components/ParticlesBackground";
 
 const Register = () => {
     const [userData, setUserData] = useState({ name: '', email: '', password: '', conf_password: '' });

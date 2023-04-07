@@ -16,7 +16,7 @@ import { useState } from 'react';
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
-import ParticleBackground from "@/components/particlesBackground";
+import ParticleBackground from "@/components/ParticlesBackground";
 
 const SignIn = () => {
   const [userData, setUserData] = useState({ email: '', password: '' });
