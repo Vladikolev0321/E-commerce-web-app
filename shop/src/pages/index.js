@@ -6,6 +6,7 @@ import styles from '@/styles/Home.module.css'
 import { Card, Col, Row, Button, Text, Grid, Container } from "@nextui-org/react";
 import { useState } from 'react';
 import ProductItem from '@/components/ProductItem';
+import ParticleBackground from '@/components/particlesBackground';
 
 const inter = Inter({ subsets: ['latin'] })
 

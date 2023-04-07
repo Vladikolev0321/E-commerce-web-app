@@ -16,6 +16,7 @@ import { useState } from 'react';
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import ParticleBackground from "@/components/particlesBackground";
 
 const SignIn = () => {
   const [userData, setUserData] = useState({ email: '', password: '' });
@@ -70,6 +71,7 @@ const SignIn = () => {
       <Head>
         <title>Sign In</title>
       </Head>
+      <ParticleBackground />
       <Container
         display="flex"
         alignItems="center"
